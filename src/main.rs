@@ -6,7 +6,7 @@ use zero2prod::startup::run;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    let subscriber = get_subscriber("zero2prod".to_string(), "info".to_string());
+    let subscriber = get_subscriber("zero2prod".to_string(), "info".to_string(), std::io::stdout);
     init_subscriber(subscriber);
 
     let configuration = get_configuration().expect("Failed to read configuration.");
