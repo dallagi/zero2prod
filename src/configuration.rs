@@ -1,5 +1,8 @@
 use serde_aux::field_attributes::deserialize_number_from_string;
-use sqlx::postgres::{PgConnectOptions, PgSslMode};
+use sqlx::{
+    postgres::{PgConnectOptions, PgSslMode},
+    ConnectOptions,
+};
 use std::convert::{TryFrom, TryInto};
 
 #[derive(serde::Deserialize)]
@@ -72,7 +75,10 @@ impl DatabaseSettings {
     }
 
     pub fn with_db(&self) -> PgConnectOptions {
-        self.without_db().database(&self.database_name)
+        self.without_db()
+            .database(&self.database_name)
+            .log_statements(log::LevelFilter::Trace)
+            .to_owned()
     }
 }
 pub fn get_configuration() -> Result<Settings, config::ConfigError> {
